@@ -3,24 +3,17 @@ public class SortingAlgorithms {
     /*--------------------------- SORTING ALGORITHMS ---------------------------*/
 
     public static void bubbleSort(String[] a) {
-        System.out.println("Started Bubble Sort");
         for(int i = 0; i < a.length; i++) {
             for(int j = 0; j < a.length - 1 - i; j++) {
                 if(a[j].compareTo(a[j + 1]) > 0) {
                     swap(a, j, j + 1);
                 }
             }
-            // if((double)i % 5_000 == 0) {
-            //     System.out.println(i);
-            // }
-            
         }
-        System.out.println("Done...");
     }
 
 
     public static void selectionSort(String[] a) {
-        System.out.println("Started Selection Sort");
         for(int i = 0; i < a.length - 1; i++) {
             int indexSmallest = i;
             for(int j = i + 1; j < a.length; j++) {
@@ -30,12 +23,10 @@ public class SortingAlgorithms {
             }
             swap(a, i, indexSmallest);
         }
-        System.out.println("Done...");
     }
 
 
     public static void insertionSort(String[] a) {
-        System.out.println("Started Insertion Sort");
         for(int i = 0; i < a.length; i++) {
             int j = i;
             while(j > 0 && a[j].compareTo(a[j - 1]) < 0) {
@@ -43,7 +34,6 @@ public class SortingAlgorithms {
                 j--;
             }
         }
-        System.out.println("Done...");
     }
 
 
