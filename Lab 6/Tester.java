@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,18 +9,29 @@ public class Tester {
     static String dictionaryFile = "dictionary.txt";
     public static void main(String[] args) throws InterruptedException {
         try(Scanner fileScanner = new Scanner(new File(dictionaryFile))) {
+            int l = getLength(dictionaryFile);
+            String[] s = new String[l];
+            extractWords(fileScanner, s);
 
-            String[] dictionary = new String[50_000];
-            extractWords(fileScanner, dictionary);
+            // int sum = 0;
+            // for(String str : s) {
+            //     sum += str.length();
+            // }
+
+            // double avg = (double)sum / l;
+            // System.out.println(avg);
+
+            // System.out.println(SortingAlgorithms.getMax(s));
+
+            long startTime = System.currentTimeMillis();
+            SortingAlgorithms.radixSort(s);
+            long estimatedTime = System.currentTimeMillis() - startTime;
+            double seconds = (double)estimatedTime / 1_000;
+            System.out.println(seconds);
             
-            String[] a = dictionary.clone();
-            String[] b = dictionary.clone();
-            String[] c = dictionary.clone();
-    
+            
 
-            System.out.println("Time to sort: " + testBubbleSort(a) + " seconds\n");
-            System.out.println("Time to sort: " + testSelectionSort(b) + " seconds\n");
-            System.out.println("Time to sort: " + testInsertionSort(c) + " seconds\n");
+
        
         }
         catch(IOException e) {

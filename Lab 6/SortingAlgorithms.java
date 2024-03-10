@@ -44,12 +44,12 @@ public class SortingAlgorithms {
 
     private static void mergeSort(String[] a, int left, int right) {
         if(left < right) {
-        int mid = (left + right) / 2;
-        
-        mergeSort(a, left, mid);
-        mergeSort(a, mid + 1, right);
+            int mid = (left + right) / 2;
+            
+            mergeSort(a, left, mid);
+            mergeSort(a, mid + 1, right);
 
-        merge(a, left, mid, right);
+            merge(a, left, mid, right);
         }
     }
 
@@ -62,32 +62,24 @@ public class SortingAlgorithms {
 
         while(leftPos <= mid && rightPos <= right) {
             if(a[leftPos].compareTo(a[rightPos]) < 0) {
-                merged[mergedPos] = a[leftPos];
-                leftPos++;
-                mergedPos++;
+                merged[mergedPos++] = a[leftPos++];
             }
-            else {
-                merged[mergedPos] = a[rightPos];
-                rightPos++;
-                mergedPos++;
+            else { 
+                merged[mergedPos++] = a[rightPos++];
             }
         }
 
         while(leftPos <= mid) {
-            merged[mergedPos] = a[leftPos];
-            leftPos++;
-            mergedPos++;
-        }       
-
-        while(rightPos <= right) {
-            merged[mergedPos] = a[rightPos];
-            rightPos++;
-            mergedPos++;
+            merged[mergedPos++] = a[leftPos++];
         }
    
+        while(rightPos <= right) {
+            merged[mergedPos++] = a[rightPos++];
+        }
+
         for(mergedPos = 0; mergedPos < merged.length; mergedPos++) {
             a[left + mergedPos] = merged[mergedPos];
-        } 
+        }
     }
 
 
@@ -125,6 +117,70 @@ public class SortingAlgorithms {
         return leftPos;
     }
 
+    private static int getAvg(String[] a) {
+        int sum = 0;
+            for(String str : a) {
+                sum += str.length();
+            }
+
+            return sum / a.length;
+    }
+
+    public static void radixSort(String[] arr) {
+        final int MAX_CHAR = getAvg(arr); // Assuming ASCII characters
+        
+        // Perform counting sort for each character position
+        for (int digit = MAX_CHAR; digit >= 0; digit--) {
+            countingSort(arr, digit);
+        }
+    }
+
+    // Counting sort for a specific character position
+    private static void countingSort(String[] arr, int digit) {
+        final int ASCII_RANGE = 253; // ASCII characters range from 0 to 127
+        
+        // Initialize count array
+        int[] count = new int[ASCII_RANGE];
+
+        // Count occurrences of characters at the given position
+        for (String str : arr) {
+            int charValue = (digit < str.length()) ? str.charAt(digit) : 0; // If string is shorter, consider character value as 0
+            count[charValue]++;
+        }
+
+        // Modify count array to store cumulative count
+        for (int i = 1; i < ASCII_RANGE; i++) {
+            count[i] += count[i - 1];
+        }
+
+        // Create a temporary array to store sorted strings
+        String[] temp = new String[arr.length];
+
+        // Build the sorted array
+        for (int i = arr.length - 1; i >= 0; i--) {
+            String str = arr[i];
+            int charValue = (digit < str.length()) ? str.charAt(digit) : 0; // If string is shorter, consider character value as 0
+            temp[count[charValue] - 1] = str;
+            count[charValue]--;
+        }
+
+        // Copy the sorted strings back to the original array
+        System.arraycopy(temp, 0, arr, 0, arr.length);
+    }
+
+    public static int getMax(String[] a) {
+        int maxLength = a[0].length();
+        String m = "";
+        for (int i = 0; i < a.length; i++) {
+            if(a[i].length() > maxLength && a[i].length() < 31) {
+                maxLength = a[i].length();
+                m = a[i];
+            }
+        }
+        System.out.println(m);
+        return maxLength;
+    }
+
     /*--------------------------- SEARCH ALGORITHMS ---------------------------*/
 
     public static int linearSearch(String[] a, String word) {
@@ -143,18 +199,18 @@ public class SortingAlgorithms {
 
 
     private static int binarySearch(String[] a, String word, int left, int right) {
-        if(left < right) {
-            int mid = left + (right - left) / 2;
+        if(left >= right) 
+            return -1;
 
-            if(a[mid].equals(word))
-                return mid;
+        int mid = left + (right - left) / 2;
 
-            if(word.compareTo(a[mid]) < 0)
-                return binarySearch(a, word, left, mid);
+        if(a[mid].equals(word))
+            return mid;
 
-            return binarySearch(a, word, mid + 1, right);
-        }
-        return -1;
+        if(word.compareTo(a[mid]) < 0)
+            return binarySearch(a, word, left, mid);
+
+        return binarySearch(a, word, mid + 1, right);
     }
 
     /*------------------------------ SWAP HELPER ------------------------------*/
