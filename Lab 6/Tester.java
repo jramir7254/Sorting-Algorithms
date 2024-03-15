@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,28 +7,48 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Tester {
-    static String dictionaryFile = "dictionary.txt";
-    public static void main(String[] args) throws InterruptedException {
+    static String dictionaryFile = "Numbers.txt";
+    public static void main(String[] args) {
         try(Scanner fileScanner = new Scanner(new File(dictionaryFile))) {
             int l = getLength(dictionaryFile);
-            String[] s = new String[l];
-            extractWords(fileScanner, s);
+            int[] a = new int[l];
+            extractNumbers(fileScanner, a);
 
-            // int sum = 0;
-            // for(String str : s) {
-            //     sum += str.length();
+            FileWriter fw = new FileWriter(new File("Lab 6\\Sorting Results\\QuickSortInt.txt"));
+            
+            
+            //     fw.append(a[i] + "\n");
+            // }));
+
+            // for(int i = 0; i < 1_000_000; i++) {
+            //     a[i] = i + 1;
             // }
 
-            // double avg = (double)sum / l;
-            // System.out.println(avg);
+            // Random r = new Random();
 
-            // System.out.println(SortingAlgorithms.getMax(s));
+            // for(int i = 0; i < a.length; i++) {
+            //     int rand = r.nextInt(1_000_000);
+            //     int temp = a[i];
+            //     a[i] = a[rand];
+            //     a[rand] = temp;
+            // }
+
+            // for(int i = 0; i < a.length; i++) {
+            //     fw.append(a[i] + "\n");
+            // }
+
+            //fw.close();
 
             long startTime = System.currentTimeMillis();
-            SortingAlgorithms.radixSort(s);
+            SortingAlgorithms.quickSort(a);
             long estimatedTime = System.currentTimeMillis() - startTime;
             double seconds = (double)estimatedTime / 1_000;
             System.out.println(seconds);
+
+            for(int i = 0; i < a.length; i++) {
+                fw.append(a[i] + "\n");
+            }
+            fw.close();
             
             
 
@@ -73,6 +94,12 @@ public class Tester {
     public static void extractWords(Scanner fileScanner, String[] a) {
         for(int i = 0; i < a.length; i++) {
             a[i] = fileScanner.nextLine();
+        }
+    }
+
+    public static void extractNumbers(Scanner fileScanner, int[] a) {
+        for(int i = 0; i < a.length; i++) {
+            a[i] = fileScanner.nextInt();
         }
     }
 
