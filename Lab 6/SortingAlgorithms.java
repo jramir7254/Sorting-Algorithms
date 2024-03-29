@@ -1,13 +1,59 @@
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
+import java.io.*;
 
 public class SortingAlgorithms {
+
+    public static void selectedAlgorithm(int s, int[] a) {
+        switch (s) {
+            case 1 : bubbleSort(a);
+                break;
+            case 2 : selectionSort(a);
+                break;
+            case 3 : insertionSort(a);
+                break;
+            case 4 : mergeSort(a);
+                break;
+            case 5 : quickSort(a);
+                break;
+            case 6 : radixSort(a);
+                break;
+            case 7 : linearSearch(a, s);
+                break;
+            case 8 : binarySearch(a, s);
+                break;
+        }
+    }
+
+
+    public static void selectedAlgorithm(int s, String[] a) {
+        switch (s) {
+            case 1 : bubbleSort(a);
+                break;
+            case 2 : selectionSort(a);
+                break;
+            case 3 : insertionSort(a);
+                break;
+            case 4 : mergeSort(a);
+                break;
+            case 5 : quickSort(a);
+                break;
+            case 6 : radixSort(a);
+                break;
+            case 7 : linearSearch(a, "");
+                break;
+            case 8 : binarySearch(a, "");
+                break;
+        }
+    }
 
     /*--------------------------- SORTING ALGORITHMS ---------------------------*/
 
     public static void bubbleSort(String[] a) {
-        boolean swapped;
-        for(int i = 0; i < a.length; i++) {
+        boolean swapped = true;
+
+        for(int i = 0; i < a.length - 1 && swapped; i++) {
             swapped = false;
             for(int j = 0; j < a.length - 1 - i; j++) {
                 if(a[j].compareTo(a[j + 1]) > 0) {
@@ -15,19 +61,24 @@ public class SortingAlgorithms {
                     swapped = true;
                 }
             }
-            if(!swapped) return;
         }
     }
 
+    
     public static void bubbleSort(int[] a) {
-        for(int i = 0; i < a.length; i++) {
+        boolean swapped = true;
+
+        for(int i = 0; i < a.length && swapped; i++) {
+            swapped = false;
             for(int j = 0; j < a.length - 1 - i; j++) {
                 if(a[j] > a[j + 1]) {
                     swap(a, j, j + 1);
+                    swapped = true;
                 }
             }
         }
     }
+
 
     public static void selectionSort(String[] a) {
         for(int i = 0; i < a.length - 1; i++) {
@@ -41,6 +92,7 @@ public class SortingAlgorithms {
         }
     }
 
+
     public static void selectionSort(int[] a) {
         for(int i = 0; i < a.length - 1; i++) {
             int indexSmallest = i;
@@ -52,28 +104,34 @@ public class SortingAlgorithms {
             swap(a, i, indexSmallest);
         }
     }
+ 
 
     public static void insertionSort(String[] a) {
-        for(int i = 0; i < a.length; i++) {
+        for(int i = 1; i < a.length; i++) {
             int j = i;
             while(j > 0 && a[j].compareTo(a[j - 1]) < 0) {
-                swap(a, j--, j - 1);
+                swap(a, j, j - 1);
+                j--;
             }
         }
     }
 
+
     public static void insertionSort(int[] a) {
-        for(int i = 0; i < a.length; i++) {
+        for(int i = 1; i < a.length; i++) {
             int j = i;
             while(j > 0 && a[j] < a[j - 1]) {
-                swap(a, j--, j - 1);
+                swap(a, j, j - 1);
+                j--;
             }
         }
     }
+
 
     public static void mergeSort(String[] a) {
         mergeSort(a, 0, a.length - 1);
     }
+
 
     private static void mergeSort(String[] a, int left, int right) {
         if(left < right) {
@@ -85,6 +143,7 @@ public class SortingAlgorithms {
             merge(a, left, mid, right);
         }
     }
+
 
     // mergeSort helper method //
     private static void merge(String[] a, int left, int mid, int right) {
@@ -114,9 +173,11 @@ public class SortingAlgorithms {
         }
     }
 
+
     public static void mergeSort(int[] a) {
         mergeSort(a, 0, a.length - 1);
     }
+
 
     private static void mergeSort(int[] a, int left, int right) {
         if(left < right) {
@@ -128,6 +189,7 @@ public class SortingAlgorithms {
             merge(a, left, mid, right);
         }
     }
+
 
     // mergeSort helper method //
     private static void merge(int[] a, int left, int mid, int right) {
@@ -157,32 +219,37 @@ public class SortingAlgorithms {
         }
     }
 
+
     public static void quickSort(String[] a) {
         quickSort(a, 0, a.length - 1);
     }
 
-    private static void quickSort(String[] a, int left, int right) {
+
+    private static void quickSort(String[] a, int left, int right) throws StackOverflowError {
         if(left < right) {
-            String pivot = a[right];
-            int piviotIndex = partition(a, left, pivot, right);
+            int piviotIndex = partition(a, left, right);
 
             quickSort(a, left, piviotIndex - 1);
             quickSort(a, piviotIndex + 1, right);
         }
     }
 
+
     // quickSort helper method //
-    private static int partition(String[] a, int left, String pivot, int right) {
+    private static int partition(String[] a, int left, int right) {
+        String pivot = a[right];
         int leftPos = left - 1;
         int rightPos;
 
         for(rightPos = left; rightPos < right; rightPos++) {
             if(a[rightPos].compareTo(pivot) < 0) {
-                swap(a, ++leftPos, rightPos);
+                ++leftPos;
+                swap(a, leftPos, rightPos);
             }
         }
 
-        swap(a, ++leftPos, rightPos);
+        ++leftPos;
+        swap(a, leftPos, rightPos);
 
         return leftPos;
     }
@@ -191,18 +258,20 @@ public class SortingAlgorithms {
         quickSort(a, 0, a.length - 1);
     }
 
+
     private static void quickSort(int[] a, int left, int right) {
         if(left < right) {
-            int pivot = a[right];
-            int piviotIndex = partition(a, left, pivot, right);
+            int piviotIndex = partition(a, left,right);
 
             quickSort(a, left, piviotIndex - 1);
             quickSort(a, piviotIndex + 1, right);
         }
     }
 
+
     // quickSort helper method //
-    private static int partition(int[] a, int left, int pivot, int right) {
+    private static int partition(int[] a, int left, int right) {
+        int pivot = a[right];
         int leftPos = left - 1;
         int rightPos;
 
@@ -218,48 +287,43 @@ public class SortingAlgorithms {
     }
 
 
-    //---------------------------------------------------------------------------------------------------------------------------------------------------
     public static void radixSort(String[] arr) {
-        final int MAX_CHAR = getMax(arr); // Assuming ASCII characters
+        final int MAX_CHAR = getMax(arr); 
         
-        // Perform counting sort for each character position
         for (int digit = MAX_CHAR; digit >= 0; digit--) {
             countingSort(arr, digit);
         }
     }
 
+
     private static void countingSort(String[] arr, int digit) {
-        final int ASCII_RANGE = 253; // ASCII characters range from 0 to 127
+        final int ASCII_RANGE = 255; 
         
-        // Initialize count array
         int[] count = new int[ASCII_RANGE];
 
-        // Count occurrences of characters at the given position
-        for (String str : arr) {
-            int charValue = (digit < str.length()) ? str.charAt(digit) : 0; // If string is shorter, consider character value as 0
+        for(String str : arr) {
+            int charValue = (digit < str.length()) ? str.charAt(digit) : 0; 
             count[charValue]++;
         }
 
-        // Modify count array to store cumulative count
-        for (int i = 1; i < ASCII_RANGE; i++) {
+        for(int i = 1; i < ASCII_RANGE; i++) {
             count[i] += count[i - 1];
         }
 
-        // Create a temporary array to store sorted strings
         String[] temp = new String[arr.length];
 
-        // Build the sorted array
+
         for (int i = arr.length - 1; i >= 0; i--) {
             String str = arr[i];
-            int charValue = (digit < str.length()) ? str.charAt(digit) : 0; // If string is shorter, consider character value as 0
+            int charValue = (digit < str.length()) ? str.charAt(digit) : 0; 
             temp[count[charValue] - 1] = str;
             count[charValue]--;
         }
 
-        // Copy the sorted strings back to the original array
         System.arraycopy(temp, 0, arr, 0, arr.length);
     }
-//------------------------------------------------------------------------------------------------------------------------------------------------
+
+    
     public static void radixSort(int[] a) {
         int maxNum = getMax(a); 
         
@@ -267,6 +331,7 @@ public class SortingAlgorithms {
             countingSort(a, exp);
         }
     }
+
 
     private static void countingSort(int[] a, int exp) {
         int output[] = new int[a.length]; 
@@ -282,7 +347,7 @@ public class SortingAlgorithms {
      
         for(int i = l - 1; i >= 0; i--) {
             output[count[(a[i] / exp) % 10] - 1] = a[i];
-            count[(a[i] / exp) % 10]--;
+            count[(a[i] / exp) % 10]--; 
         }
      
         for(int i = 0; i < l; i++)
@@ -300,6 +365,7 @@ public class SortingAlgorithms {
         return -1;
     }
 
+
     public static int linearSearch(int[] a, int number) {
         for(int i = 0; i < a.length; i++) {
             if(a[i] == number) {
@@ -309,9 +375,11 @@ public class SortingAlgorithms {
         return -1;
     }
 
+
     public static int binarySearch(String[] a, String word) {
         return binarySearch(a, word, 0, a.length - 1);
     }
+
 
     private static int binarySearch(String[] a, String word, int left, int right) {
         if(left >= right) 
@@ -328,9 +396,11 @@ public class SortingAlgorithms {
         return binarySearch(a, word, mid + 1, right);
     }
 
+
     public static int binarySearch(int[] a, int number) {
         return binarySearch(a, number, 0, a.length - 1);
     }
+
 
     private static int binarySearch(int[] a, int number, int left, int right) {
         if(left >= right) 
@@ -355,11 +425,13 @@ public class SortingAlgorithms {
         a[j] = temp;
     }
 
+
     private static void swap(int[] a, int i, int j) {
         int temp = a[i];
         a[i] = a[j];
         a[j] = temp;
     }
+
 
     public static void shuffle(String[] a) {
         Random rand = new Random();
@@ -369,6 +441,7 @@ public class SortingAlgorithms {
         }
     }
 
+
     public static void shuffle(int[] a) {
         Random rand = new Random();
         for(int i = a.length - 1; i > 0; i--) {
@@ -377,14 +450,6 @@ public class SortingAlgorithms {
         }
     }
 
-    private static int getAvg(String[] a) {
-        int sum = 0;
-            for(String str : a) {
-                sum += str.length();
-            }
-
-            return sum / a.length;
-    }
 
     public static int getMax(String[] a) {
         int maxLength = a[0].length();
@@ -395,6 +460,7 @@ public class SortingAlgorithms {
         }
         return maxLength;
     }
+
 
     public static int getMax(int[] a) {
         int maxNum = a[0];
