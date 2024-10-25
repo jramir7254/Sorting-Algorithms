@@ -11,18 +11,20 @@ public class Tester {
         try(Scanner fileScanner = new Scanner(new File(mainFile))) {
 
             int l = getLength(mainFile);
-            int[] a = new int[l];
-            extractNumbers(fileScanner, a);
+            int[] a = new int[15_000];
             
-            System.out.println("Started");
-            long startTime = System.currentTimeMillis();
-            SortingAlgorithms.radixSort(a);
-            long estimatedTime = System.currentTimeMillis() - startTime;
-            double seconds = (double)estimatedTime / 1_000;
-            System.out.println(seconds);
-            System.out.println("Done");
+            
+            for(int i = 0; i < 5; i++) {
+                extractNumbers(fileScanner, a);
+                System.out.println("Started");
+                long startTime = System.currentTimeMillis();
+                SortingAlgorithms.bubbleSort(a);
+                long estimatedTime = System.currentTimeMillis() - startTime;
+                double seconds = (double)estimatedTime / 1_000;
+                System.out.println(seconds);
+                System.out.println("Done");
+            }
 
-            writeResults("Test-Nums.txt", a);
 
         }
         catch(IOException e) {
